@@ -1,8 +1,18 @@
 *** Settings ***
-Resource	validationKeywords/validationKeywords.txt
+Resource	highLevelKeywords/commonHLK.txt
+Resource	highLevelKeywords/createPetHLK.txt
+Resource	highLevelKeywords/headerHLK.txt
+Resource	highLevelKeywords/listPetHLK.txt
+Resource	windowDrivers/commonWD.txt
+Resource	windowDrivers/createPetWD.txt
+Resource	windowDrivers/headerWD.txt
+Resource	windowDrivers/listPetWD.txt
+Resource	windowDrivers/validationKeywords.txt
+
 Library	OperatingSystem
 Library	Selenium2Library
 Library	DateTime
+
 Suite Setup	Setup
 Suite Teardown	Close All Browsers
 
@@ -55,116 +65,3 @@ US03 - Be able to add a new pet - status missing
 	And the user has entered Name
 	Then he is able to validate his input by clicking on the Create button
 	Run Keyword And Expect Error	${ErrEmptyStatusDelNotPresent}	View pet	newName	${EMPTY}	#test fails - should not be possible to add with empty status therefore pet should not be visisble on the list
-
-*** Keywords ***
-# Low Level Keywrods ***
-Access the page
-	[Arguments]	${page}
-	Set Environment Variable	webdriver.chrome.driver	${EXECDIR}/chromedriver.exe
-	Open Browser	${WEBAPP}	${BROWSER}
-
-Provide pet's name
-	[Arguments]	${petName}
-	Input Text	//input[@placeholder='Pet Name']	${petName}
-	
-Provide pet's status
-	[Arguments]	${petStatus}
-	Input Text	//input[@placeholder='Pet Status']	${petStatus}
-
-Validate entered phrase by keyboard Enter key
-	[Arguments]	${locator}
-	Press Key	${locator}	\\13
-	
-Discard changes with ESC key
-	[Arguments]	${locator}
-	Press Key	${locator}	\\27
-	
-Press button with text
-	[Arguments]	${createButton}
-	Click button	//button[text()="${createButton}"]
-	
-View pet
-	[Arguments]	${petName}	${petStatus}
-	Wait Until Page Contains Element	//input[@value='${petName}']
-	Sleep	1s
-	Wait Until Page Contains Element	//input[@value='${petName}']/following::input[@value='${petStatus}']
-	
-Delete pet
-	[Arguments]	${petName}	${petStatus}
-	Wait Until Page Contains Element	//input[@value='${petName}']
-	Click Button	//input[@value='${petName}']/following::input[@value='${petStatus}']/following::button
-	
-Edit full pet
-	[Arguments]	${petName}	${editedName}	${petStatus}	${editedStatus}
-	Click Element	//span[text()='${petName}']
-	Click Element	//input[@value='${petName}']
-	Input Text	//input[@value='${petName}']	${editedName}
-	Click Element	//input[@value='${petName}']/following::input[@value='${petStatus}']
-	Sleep	1s
-	Click Element	//span[text()='${editedName}']/following::span[text()='${petStatus}']
-	Click Element	//input[@value='${editedName}']/following::input[@value='${petStatus}']
-	Input Text	//input[@value='${editedName}']/following::input[@value='${petStatus}']	${editedStatus}
-	Click Element	//input[@value='${editedName}']
-	
-Edit pet name
-	[Arguments]	${petName}	${editedName}
-	Click Element	//span[text()='${petName}']
-	Click Element	//input[@value='${petName}']
-	Input Text	//input[@value='${petName}']	${editedName}
-	
-Edit pet status
-	[Arguments]	${editedName}	${petStatus}	${editedStatus}
-	Click Element	//span[text()='${editedName}']/following::span[text()='${petStatus}']
-	Click Element	//input[@value='${editedName}']/following::input[@value='${petStatus}']
-	Input Text	//input[@value='${editedName}']/following::input[@value='${petStatus}']	${editedStatus}
-
-	
-# High Level keywors ***
-Setup
-	Given the user has accessed the webapp
-	When the page is rendered on the user's browser
-
-The user has accessed the webapp
-	Access the page	${WEBAPP}
-
-The page is rendered on the user's browser
-	Check page is displayed	Petstore webapp
-	
-He sees the date of the day displayed on the top right part of the page
-	Check date text is displayed	today's date is
-	
-The date format is : DD-MM-YYYY
-	Check date in proper format is displayed
-	
-The background color of the banner is black
-	Check background color of date banner	rgba(51, 51, 51, 1)	#black
-	
-The user has entered Name
-	Provide pet's name	newName
-	
-The user has entered Status
-	Provide pet's status	newStatus
-	
-He is able to validate his input by using keyboard Enter key
-	Validate entered phrase by keyboard Enter key	//input[@placeholder='Pet Status']
-	
-He is able to validate his input by clicking on the Create button
-	Press button with text	Create
-	
-I'm able to view my pets Name and Status
-	View pet	newName	newStatus
-	
-The list of pets displayed in a table like component
-	Check table exists	Name	Status	Action
-	
-The user should be able to edit a pet by clicking on the existing pet name or pet status
-	Edit full pet	newName	editedName	newStatus	editedStatus
-	
-Then the user quits the editing of the pet with ESC key
-	[Arguments]	${petName}
-	Discard changes with ESC key	//input[@value='${petName}']
-
-Then the user quits the editing of the pet with Enter key
-	[Arguments]	${editedName}	${petStatus}
-	Validate entered phrase by keyboard Enter key	//input[@value='${editedName}']/following::input[@value='${petStatus}']
-	

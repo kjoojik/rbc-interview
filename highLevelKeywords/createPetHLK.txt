@@ -1,0 +1,17 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+The user has entered Name
+	Provide pet's name	newName
+	
+The user has entered Status
+	Provide pet's status	newStatus
+	
+He is able to validate his input by using keyboard Enter key
+	Validate entered phrase by keyboard Enter key	//input[@placeholder='Pet Status']
+	
+He is able to validate his input by clicking on the Create button
+	Press button with text	Create

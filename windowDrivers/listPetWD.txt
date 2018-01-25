@@ -1,0 +1,41 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+View pet
+	[Arguments]	${petName}	${petStatus}
+	Wait Until Page Contains Element	//input[@value='${petName}']
+	Sleep	1s
+	Wait Until Page Contains Element	//input[@value='${petName}']/following::input[@value='${petStatus}']
+	
+Delete pet
+	[Arguments]	${petName}	${petStatus}
+	Wait Until Page Contains Element	//input[@value='${petName}']
+	Click Button	//input[@value='${petName}']/following::input[@value='${petStatus}']/following::button
+	
+Edit full pet
+	[Arguments]	${petName}	${editedName}	${petStatus}	${editedStatus}
+	Click Element	//span[text()='${petName}']
+	Click Element	//input[@value='${petName}']
+	Input Text	//input[@value='${petName}']	${editedName}
+	Click Element	//input[@value='${petName}']/following::input[@value='${petStatus}']
+	Sleep	1s
+	Click Element	//span[text()='${editedName}']/following::span[text()='${petStatus}']
+	Click Element	//input[@value='${editedName}']/following::input[@value='${petStatus}']
+	Input Text	//input[@value='${editedName}']/following::input[@value='${petStatus}']	${editedStatus}
+	Click Element	//input[@value='${editedName}']
+	
+Edit pet name
+	[Arguments]	${petName}	${editedName}
+	Click Element	//span[text()='${petName}']
+	Click Element	//input[@value='${petName}']
+	Input Text	//input[@value='${petName}']	${editedName}
+	
+Edit pet status
+	[Arguments]	${editedName}	${petStatus}	${editedStatus}
+	Click Element	//span[text()='${editedName}']/following::span[text()='${petStatus}']
+	Click Element	//input[@value='${editedName}']/following::input[@value='${petStatus}']
+	Input Text	//input[@value='${editedName}']/following::input[@value='${petStatus}']	${editedStatus}
+	

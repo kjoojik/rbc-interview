@@ -1,0 +1,14 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+He sees the date of the day displayed on the top right part of the page
+	Check date text is displayed	today's date is
+	
+The date format is : DD-MM-YYYY
+	Check date in proper format is displayed
+	
+The background color of the banner is black
+	Check background color of date banner	rgba(51, 51, 51, 1)	#black

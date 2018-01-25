@@ -1,0 +1,23 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+ 
+*** Keywords ***
+I'm able to view my pets Name and Status
+	View pet	newName	newStatus
+	
+The list of pets displayed in a table like component
+	Check table exists	Name	Status	Action
+	
+The user should be able to edit a pet by clicking on the existing pet name or pet status
+	Edit full pet	newName	editedName	newStatus	editedStatus
+	
+Then the user quits the editing of the pet with ESC key
+	[Arguments]	${petName}
+	Discard changes with ESC key	//input[@value='${petName}']
+
+Then the user quits the editing of the pet with Enter key
+	[Arguments]	${editedName}	${petStatus}
+	Validate entered phrase by keyboard Enter key	//input[@value='${editedName}']/following::input[@value='${petStatus}']
+	

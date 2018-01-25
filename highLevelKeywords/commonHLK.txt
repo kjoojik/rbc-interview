@@ -1,0 +1,15 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+Setup
+	Given the user has accessed the webapp
+	When the page is rendered on the user's browser
+	
+The user has accessed the webapp
+	Access the page	${WEBAPP}
+
+The page is rendered on the user's browser
+	Check page is displayed	Petstore webapp

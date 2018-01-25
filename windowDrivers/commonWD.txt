@@ -1,0 +1,22 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+Access the page
+	[Arguments]	${page}
+	Set Environment Variable	webdriver.chrome.driver	${EXECDIR}/chromedriver.exe
+	Open Browser	${WEBAPP}	${BROWSER}
+
+Validate entered phrase by keyboard Enter key
+	[Arguments]	${locator}
+	Press Key	${locator}	\\13
+	
+Discard changes with ESC key
+	[Arguments]	${locator}
+	Press Key	${locator}	\\27
+	
+Press button with text
+	[Arguments]	${Button}
+	Click button	//button[text()="${Button}"]

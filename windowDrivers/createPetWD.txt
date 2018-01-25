@@ -1,0 +1,13 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+Provide pet's name
+	[Arguments]	${petName}
+	Input Text	//input[@placeholder='Pet Name']	${petName}
+	
+Provide pet's status
+	[Arguments]	${petStatus}
+	Input Text	//input[@placeholder='Pet Status']	${petStatus}
