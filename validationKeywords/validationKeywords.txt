@@ -1,0 +1,31 @@
+*** Settings ***
+Library	OperatingSystem
+Library	Selenium2Library
+Library	DateTime
+
+*** Keywords ***
+Check date in proper format is displayed
+	${DateValue}=    Get Current Date    result_format=%d-%m-%Y
+    log    {DateValue}
+	Wait Until Page Contains	${DateValue}
+
+Check page is displayed
+	[Arguments]	${textLogo}
+	Wait Until Page Contains	${textLogo}
+
+Check date text is displayed
+	[Arguments]	${DateText}
+	Wait Until Page Contains	${DateText}
+   
+Check background color of date banner
+	[Arguments]	${dateBannerBackgroundColor}
+	${elem}    Get Webelement    css=.assignment-masthead
+	${bg color}    Call Method    ${elem}    value_of_css_property    background-color
+	Should be equal	${bg color}	${dateBannerBackgroundColor}
+	
+Check table exists
+	[Arguments]	${column1}	${column2}	${column3}
+	Wait Until Page Contains Element	//table
+	Wait Until Page Contains Element 	//table/descendant::th[text()='${column1}']	
+	Wait Until Page Contains Element	//table/descendant::th[text()='${column2}']
+	Wait Until Page Contains Element	//table/descendant::th[text()='${column3}']	
